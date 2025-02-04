@@ -1,6 +1,12 @@
 import { test, expect, vi } from 'vitest';
 import { log } from './log';
 
+interface Person {
+  name: string;
+  description: string;
+  add: (x: number, y: number) => number;
+}
+
 vi.mock('react-redux', (args) => {
   return {
     useDispatch() {},
@@ -10,7 +16,7 @@ vi.mock('react-redux', (args) => {
 
 test('it spies on the multiply method', () => {
   const add = (x: number, y: number) => x + y;
-  const testfn = (x?: string) => {
+  const testfn = (x?: string): Person | undefined => {
     if (x) {
       return {
         name: x,
@@ -21,7 +27,7 @@ test('it spies on the multiply method', () => {
   };
 
   const mock = vi.fn(add);
-  const mockFn = testfn('Joe');
+  const mockFn = testfn('Joe')!;
 
   vi.spyOn(mockFn, 'add').mockImplementation(() => 5);
 
