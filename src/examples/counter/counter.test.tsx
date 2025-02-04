@@ -1,10 +1,21 @@
-import { screen, render } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Counter from '.';
+import { render } from 'test/utilities';
 
-test.todo('it should render the component', () => {});
+test('it should render the component', () => {
+  const wrapper = render(<Counter />);
+  expect(wrapper.container).toBe(wrapper.container);
+});
 
-test.todo(
-  'it should increment when the "Increment" button is pressed',
-  async () => {},
-);
+test('it should increment when the "Increment" button is pressed', async () => {
+  const { user } = render(<Counter/>)
+  const buttonElement = screen.getByRole('button', { name: 'Increment' });
+  const counterContent = screen.getByTestId('current-count');
+
+  //screen.debug(document);
+  await user.click(buttonElement);
+  //screen.debug(document);
+
+  expect(counterContent.textContent).toBe('1');
+});

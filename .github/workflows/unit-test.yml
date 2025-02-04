@@ -1,0 +1,44 @@
+name: Run Unit Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository 🫠
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3 # Set this to the node version you are using
+      - uses: actions/cache@v3
+        id: npm-cache # use this to check for `cache-hit`
+        with:
+          path: ~/.npm
+          key: npm-{{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run unit tests
+        run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository 🫠
+        uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3 # Set this to the node version you are using
+      - uses: actions/cache@v3
+        id: npm-cache # use this to check for `cache-hit`
+        with:
+          path: ~/.npm
+          key: npm-{{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run build
+        run: npm run build
